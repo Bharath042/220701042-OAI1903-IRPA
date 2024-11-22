@@ -1,0 +1,61 @@
+Project Objective
+The objective of the Automated Employee Training Tracker Bot is to streamline the monitoring and tracking of employee training completion within an organization. By automating this process, HR can minimize manual effort, reduce human error, and ensure timely reminders and accurate reporting of training statuses. The bot will send reminders, monitor training deadlines daily, and generate a weekly report on training progress for HR.
+
+Workflow Overview
+Daily Check-In for Updates
+
+Every morning, the bot opens and reads the Excel file containing the training data.
+It verifies each employee’s training completion status and deadline to determine if any reminders need to be sent.
+Sending Daily Reminders
+
+The bot identifies employees with upcoming or overdue training deadlines and sends them a reminder email.
+Weekly Report Generation
+
+Every Friday, the bot compiles a report for HR summarizing the week’s training completion statuses.
+The report will categorize trainings as “Completed,” “Overdue,” and “In Progress,” providing HR with a comprehensive view of employee progress.
+The report is then saved in a designated folder and emailed to HR.
+Key Bot Functions
+Daily Excel Data Read & Refresh
+
+Open the designated Excel file and read the data into a DataTable (dtEmployeeData) for processing.
+Training Status Verification
+
+For each employee, check:
+Completion Status: Identify if the training is marked as "Completed."
+Deadline: Determine if the deadline is approaching or has passed.
+Send Email Reminders
+
+For trainings that are overdue or due soon, send an email reminder to the respective employees.
+The email should include:
+Training Course Name
+Deadline
+Encouragement to complete the training
+Weekly Report Generation
+
+Create Summary Report: At the end of each week, generate a report categorizing trainings into:
+Completed: Trainings marked as completed during the week.
+Overdue: Trainings with passed deadlines that remain incomplete.
+In Progress: Trainings still ongoing but within deadline.
+Save Report: Store this report as an Excel file in a shared drive or designated folder.
+Email Report to HR: Send an email with the report attached, providing HR a clear view of the training progress for all employees.
+Daily & Weekly Operation Flow
+Daily Execution (Runs Every Morning)
+
+Step 1: Open the Excel file and read all data into dtEmployeeData.
+Step 2: For each employee, check the deadline and completion status.
+If overdue or nearing deadline, send a reminder email.
+Weekly Execution (Runs Every Friday)
+
+Step 1: Refresh dtEmployeeData to get the latest data.
+Step 2: Generate a weekly report summarizing completed, overdue, and in-progress trainings.
+Step 3: Save the report and email it to HR.
+Considerations for Logical Flow
+Daily Data Refresh:
+
+Ensures any updates from HR (such as new assignments or status changes) are captured each day.
+Categorization for Reporting:
+
+Avoids redundancy by only counting each training once in either the completed, overdue, or in-progress categories for the weekly report.
+Error Handling:
+
+For missing or incorrectly formatted data (e.g., missing deadlines), the bot will log an entry in the report and notify HR if there’s an error in the data.

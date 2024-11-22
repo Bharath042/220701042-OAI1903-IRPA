@@ -1,0 +1,110 @@
+Sure! I’ll provide you with detailed step-by-step instructions on how to build your **Automated Employee Training Tracker** bot using UiPath. This will include what to click, what to type, and specific actions to take at each step.
+
+### Step 1: Create the Excel File
+
+1. **Open Microsoft Excel**:
+   - Click on the **Start** menu or press the **Windows key**.
+   - Type **Excel** and press **Enter** to open Microsoft Excel.
+
+2. **Create a New Workbook**:
+   - Once Excel is open, click on **Blank Workbook**.
+
+3. **Set Up the Columns**:
+   - In the first row, enter the following headers:
+     - **A1**: Type `Employee ID` and press **Tab**.
+     - **B1**: Type `Employee Name` and press **Tab**.
+     - **C1**: Type `Training Course` and press **Tab**.
+     - **D1**: Type `Assigned Date` and press **Tab**.
+     - **E1**: Type `Completion Status` and press **Tab**.
+     - **F1**: Type `Deadline` and press **Enter**.
+
+4. **Add Sample Data** (Optional):
+   - Below the headers, input the following sample data:
+     ```
+     | Employee ID | Employee Name | Training Course  | Assigned Date | Completion Status | Deadline   |
+     |-------------|---------------|-------------------|---------------|--------------------|------------|
+     | 001         | John Doe      | Safety Training    | 2024-11-01    | In Progress         | 2024-11-30 |
+     | 002         | Jane Smith    | Compliance Training | 2024-11-01    | Not Started         | 2024-12-01 |
+     | 003         | Bob Johnson    | Skill Development   | 2024-11-01    | Completed           | 2024-11-15 |
+     ```
+
+5. **Save the File**:
+   - Click on **File** > **Save As**.
+   - Choose a location (e.g., `C:\Training`).
+   - In the **File name** box, type `EmployeeTrainingTracker.xlsx`.
+   - Click on **Save**.
+
+### Step 2: Set Up the UiPath Project
+
+1. **Open UiPath Studio**:
+   - Click on the **Start** menu or press the **Windows key**.
+   - Type **UiPath Studio** and press **Enter** to launch it.
+
+2. **Create a New Project**:
+   - In the UiPath Studio welcome screen, click on **New Project**.
+   - Select **Process**.
+   - In the **Name** box, type `AutomatedEmployeeTrainingTracker`.
+   - In the **Location** box, choose where you want to save the project (e.g., `C:\UiPathProjects`).
+   - Click **Create**.
+
+### Step 3: Design the Workflow
+
+1. **Open the Main.xaml File**:
+   - In the **Project panel**, double-click on `Main.xaml` to open the workflow designer.
+
+2. **Add Excel Application Scope**:
+   - In the **Activities panel** (usually on the left side), search for **Excel Application Scope**.
+   - Drag and drop the **Excel Application Scope** onto the designer canvas.
+
+3. **Set the Excel File Path**:
+   - Click on the **Excel Application Scope** box.
+   - In the **Properties panel** (usually on the right), find the **WorkbookPath** property.
+   - Click on the folder icon to browse and select your Excel file (`C:\Training\EmployeeTrainingTracker.xlsx`).
+
+4. **Read Data from Excel**:
+   - Inside the **Excel Application Scope**, search for **Read Range** in the Activities panel.
+   - Drag and drop the **Read Range** activity inside the Excel Application Scope.
+   - In the **Properties panel**, set:
+     - **Output**: Create a new variable called `dtEmployeeData` (click on the `+` button to create a new variable).
+     - **Range**: Leave this empty to read the entire sheet.
+
+5. **Add For Each Row Activity**:
+   - Below the **Read Range** activity, search for **For Each Row** in the Activities panel.
+   - Drag and drop the **For Each Row** activity onto the designer canvas.
+   - In the **Properties panel**, set the **DataTable** property to `dtEmployeeData`.
+
+6. **Inside For Each Row, Check Completion Status**:
+   - Drag and drop an **If** activity inside the **For Each Row**.
+   - In the **Condition** box, enter:
+     ```plaintext
+     (row("Completion Status").ToString = "Not Started" Or row("Completion Status").ToString = "In Progress") And DateTime.Parse(row("Deadline").ToString) < DateTime.Now.AddDays(3)
+     ```
+   - This checks if the employee's training is not started or in progress and if the deadline is approaching.
+
+7. **Send Email Reminders**:
+   - Inside the **Then** section of the **If** activity, search for **Send SMTP Mail Message** in the Activities panel.
+   - Drag and drop it into the **Then** section.
+   - Set the properties:
+     - **To**: Set to the employee's email (you may need to add a column for email addresses in your Excel file).
+     - **Subject**: Type `Training Reminder for ${row("Training Course")}`.
+     - **Body**: Type `Dear ${row("Employee Name")},\n\nThis is a reminder for your training course: ${row("Training Course")}.\nDeadline: ${row("Deadline")}.\n\nBest regards,\nYour HR Team`.
+
+8. **Generate Weekly Report**:
+   - After the **For Each Row**, you can create logic to generate the report. This involves creating a new DataTable to aggregate the data.
+   - You can use **Write Range** to write the report data into a new Excel file or sheet.
+
+9. **Send Report to HR**:
+   - After generating the report, use the **Send SMTP Mail Message** activity again to send the report to HR.
+
+### Step 4: Testing
+
+1. **Run the Workflow**:
+   - Click on the **Run** button (the green play button) in the toolbar to execute your workflow.
+   - Check the output to ensure that reminders are sent correctly.
+
+### Step 5: Deployment (Optional)
+
+1. **Publish the Project**:
+   - Once everything is tested and working, you can publish your project to UiPath Orchestrator (if you have access).
+
+This step-by-step guide should help you set up your bot effectively! If you have any questions or need further clarification on any of these steps, please let me know!
